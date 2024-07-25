@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="pizza.js"></script>
+</head>
+
+<body x-data="pizzaCart">
+    <div class="container">
+        <h1 x-text="title"></h1>
+        <div class="cart" x-cloak>
+            <div>
+                <div class="login">
+                    Username : <input type="text" x-model="username">
+                    <button @click="login" x-show="username">login</button>
+                    <button @click="logout" x-show="username && cartId">logout</button>
+                    <!-- <a href="">logout</a> -->
+                </div>
+                <div x-show="cartId">
+                    cart code: <span x-text="cartId"></span>
+                </div>
+            </div>
+
+            <div x-show="cartTotal > 0">
+
+
+
+                <h2>Your cart</h2>
+                <div class="message" x-text="message">message here</div>
+                <table>
+                    <tr>
+                        <th>flavour</th>
+                        <th>size</th>
+                        <th>price</th>
+                        <th>qty</th>
+                        <th>total</th>
+                    </tr>
+                    <template x-for="pizza in cartPizzas">
+                        <tr>
+                            <td x-text="pizza.flavour"></td>
+                            <td x-text="pizza.size"></td>
+                            <td x-text="pizza.price">57.00</td>
+                            <td>
+                                <button @click="addPizzaToCart(pizza.id)">+</button>
+                                x<span x-text="pizza.qty"></span>
+                                <button @click="removePizzaFromCart(pizza.id)">-</button>
+
+                            </td>
+                            <td x-text="pizza.total"></td>
+
+                        </tr>
+
+
+                    </template>
+
+
+                    <tr>
+                        <td colspan="3">total</td>
+                        <td colspan="2" style="float: right;">R <span x-text="cartTotal"></span> </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">pay now</td>
+                        <td>
+                            <input x-model="paymentAmount" type="text">
+                        </td>
+                        <td><button @click="payForCart()">pay</button></td>
+                    </tr>
+                </table>
+
+
+
+            </div>
+
+        </div>
+
+
+        <div class="pizzas" x-show="username && cartId">
+
+            <div class="checkout" x-show="cart.length > 0">
+                <h2>Checkout</h2>
+                <button @click="showPaymentInput = true">Check Out</button>
+                <div x-show="showPaymentInput" style="margin-top: 10px;">
+                    <input type="number" placeholder="Enter Payment" x-model.number="paymentAmount">
+                    <button @click="completePayment">Pay</button>
+                </div>
+            </div>
+
+
+        </div>
+        <h1>Featured Pizza</h1>
+        <div class="pizzass">
+
+            
+            <div class="pizza medium_pizza">
+                <h2>Medium Pizza</h2>
+                <img src="images/R.png" width="125">
+                <h3>R49.99</h3>
+                <p>Medium margherita pizza with 3 toppings max. 2 or fewer other toppings.</p>
+                <button class="btn" @click="addFeaturedPizzaToCart('medium', 49.99)">buy</button>
+            </div>
+
+            <div class="pizza large_pizza">
+                <h2>Large Pizza</h2>
+                <img src="images/ft.jpg" width="150">
+                <h3>R69.99</h3>
+                <p> Large margherita pizza with 3 toppings max. 3 meat toppings max. 3 or fewer other toppings.</p>
+                <button class="btn" @click="addFeaturedPizzaToCart('large', 69.99)">buy</button>
+            </div>
+            <div class="pizza small_pizza">
+                <h2>Small Pizza</h2>
+                <img src="images/patrona-supreme.webp" width="100">
+                <h3>R29.99</h3>
+                <p>Small pizza with 3 toppings, 1 meat topping. 3 or fewer other toppings.</p>
+                <button class="btn" @click="addFeaturedPizzaToCart('small', 29.99)">buy</button>
+            </div>
+
+
+        </div>
+
+        <h2>pizzas</h2>
+        <template x-for="pizza in pizzas">
+
+            <div class="pizza">
+                <img src="./images/R.png" width="15%" alt="">
+                <h5 x-text="pizza.flavour"></h5>
+                <span x-text="pizza.size"></span>
+                <strong>
+                    R<span x-text="pizza.price"></span>
+                </strong>
+                <div>
+                    <button class="btn" @click="addPizzaToCart(pizza.id)">add to cart</button>
+                </div>
+
+            </div>
+
+        </template>
+
+    </div>
+
+    </div>
+
+
+
+
+
+</body>
+
+</html>
